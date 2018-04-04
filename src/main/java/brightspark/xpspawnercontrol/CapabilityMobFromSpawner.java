@@ -1,6 +1,5 @@
-package brightspark.xpspawnercontrol.capability;
+package brightspark.xpspawnercontrol;
 
-import brightspark.xpspawnercontrol.XpSpawnerControl;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.util.EnumFacing;

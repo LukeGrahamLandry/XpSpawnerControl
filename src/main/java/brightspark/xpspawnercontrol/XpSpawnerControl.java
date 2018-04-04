@@ -1,6 +1,5 @@
 package brightspark.xpspawnercontrol;
 
-import brightspark.xpspawnercontrol.capability.CapabilityMobFromSpawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.Logger;
 
 @Mod(modid = XpSpawnerControl.MODID, name = XpSpawnerControl.NAME, version = XpSpawnerControl.VERSION)
 public class XpSpawnerControl
