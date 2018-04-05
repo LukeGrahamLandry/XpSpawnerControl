@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid = XpSpawnerControl.MODID, name = XpSpawnerControl.NAME, version = XpSpawnerControl.VERSION)
 public class XpSpawnerControl
@@ -22,13 +23,21 @@ public class XpSpawnerControl
     public static final String NAME = "Xp Spawner Control";
     public static final String VERSION = "@VERSION@";
 
+    private static Logger LOGGER;
+
     @CapabilityInject(CapabilityMobFromSpawner.class)
     private static Capability<CapabilityMobFromSpawner> CAP = null;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        LOGGER = event.getModLog();
         CapabilityManager.INSTANCE.register(CapabilityMobFromSpawner.class, new CapabilityMobFromSpawner.Storage(), CapabilityMobFromSpawner.Impl::new);
+    }
+
+    private static void log(String message, Object... args)
+    {
+        LOGGER.info(String.format(MODID + " -> " + message, args));
     }
 
     @Mod.EventBusSubscriber
@@ -38,7 +47,11 @@ public class XpSpawnerControl
         public static void attachCap(AttachCapabilitiesEvent<Entity> event)
         {
             if(event.getObject() instanceof EntityLivingBase && !(event.getObject() instanceof EntityPlayer))
+            {
+                if(ModConfig.debug)
+                    log("Added capability to %s (%s)", event.getObject().getName(), EntityList.getKey(event.getObject()).toString());
                 event.addCapability(CapabilityMobFromSpawner.RL, new CapabilityMobFromSpawner.Provider(CAP));
+            }
         }
 
         @SubscribeEvent
@@ -47,6 +60,8 @@ public class XpSpawnerControl
             if(event.getWorld().isRemote || event.getSpawner() == null || event.getEntityLiving() == null)
                 return;
 
+            if(ModConfig.debug)
+                log("Setting as spawned from spawner (%s)", EntityList.getKey(event.getEntityLiving()).toString());
             CapabilityMobFromSpawner cap = event.getEntityLiving().getCapability(CAP, null);
             if(cap != null) cap.setSpawnedFromSpawner();
         }
@@ -58,7 +73,13 @@ public class XpSpawnerControl
             if(cap == null || !cap.isSpawnedFromSpawner()) return;
 
             String name = EntityList.getKey(event.getEntityLiving()).toString();
-            boolean shouldRemoveXp = ModConfig.isBlacklist != contains(ModConfig.entityList, name);
+            boolean isInList = contains(ModConfig.entityList, name);
+            boolean shouldRemoveXp = ModConfig.isBlacklist != isInList;
+            if(ModConfig.debug)
+            {
+                log("Blacklist: %s, Is in list: %s", ModConfig.isBlacklist, isInList);
+                log("Should remove XP from %s? %s", EntityList.getKey(event.getEntityLiving()).toString(), shouldRemoveXp);
+            }
             if(shouldRemoveXp) event.setDroppedExperience(0);
         }
 

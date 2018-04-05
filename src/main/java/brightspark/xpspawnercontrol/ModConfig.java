@@ -13,4 +13,7 @@ public class ModConfig
     @Config.Comment("A list of all of the entity registry names which this mod will affect (e.g. minecraft:zombie)")
     @Config.RequiresMcRestart
     public static String[] entityList = {""};
+
+    @Config.Comment("Set to true to turn on debugging log messages")
+    public static boolean debug = false;
 }
