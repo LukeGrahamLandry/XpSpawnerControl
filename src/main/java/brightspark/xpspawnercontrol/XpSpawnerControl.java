@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +67,7 @@ public class XpSpawnerControl
             if(cap != null) cap.setSpawnedFromSpawner();
         }
 
-        @SubscribeEvent
+        @SubscribeEvent(priority = EventPriority.LOWEST)
         public static void onMobDeathXp(LivingExperienceDropEvent event)
         {
             CapabilityMobFromSpawner cap = event.getEntityLiving().getCapability(CAP, null);
@@ -75,12 +76,10 @@ public class XpSpawnerControl
             String name = EntityList.getKey(event.getEntityLiving()).toString();
             boolean isInList = contains(ModConfig.entityList, name);
             boolean shouldRemoveXp = ModConfig.isBlacklist != isInList;
-            if(ModConfig.debug)
-            {
-                log("Blacklist: %s, Is in list: %s", ModConfig.isBlacklist, isInList);
-                log("Should remove XP from %s? %s", EntityList.getKey(event.getEntityLiving()).toString(), shouldRemoveXp);
-            }
             if(shouldRemoveXp) event.setDroppedExperience(0);
+            if(ModConfig.debug)
+                log("Should remove XP from %s? %s, Blacklist: %s, Is in list: %s",
+                        EntityList.getKey(event.getEntityLiving()).toString(), shouldRemoveXp, ModConfig.isBlacklist, isInList);
         }
 
         private static boolean contains(String[] list, String value)
