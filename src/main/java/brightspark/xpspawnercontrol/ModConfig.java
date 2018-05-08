@@ -12,6 +12,6 @@ public class ModConfig
     @Config.Comment("A list of all of the entity registry names which this mod will affect (e.g. minecraft:zombie)")
     public static String[] entityList = {""};
 
-    @Config.Comment("Set to true to turn on debugging log messages")
+    @Config.Comment("Set to true to turn on debugging log messages (WARNING: This may spam the console with logs)")
     public static boolean debug = false;
 }
