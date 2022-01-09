@@ -1,6 +1,7 @@
-package brightspark.xpspawnercontrol;
+package brightspark.xpspawnercontrol.config;
 
 
+import brightspark.xpspawnercontrol.XpSpawnerControl;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraftforge.common.ForgeConfigSpec;
