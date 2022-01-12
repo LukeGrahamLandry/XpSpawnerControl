@@ -2,6 +2,7 @@ package brightspark.xpspawnercontrol.mixin;
 
 import net.minecraft.client.MainWindow;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -9,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.io.InputStream;
 import java.util.function.BiConsumer;
 
+@Pseudo
 @Mixin(MainWindow.class)
 public class M1Fix {
     @Inject(at = @At("HEAD"), method = "setIcon", cancellable = true)

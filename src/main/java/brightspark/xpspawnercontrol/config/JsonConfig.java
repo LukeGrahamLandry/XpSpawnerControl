@@ -1,5 +1,6 @@
 package brightspark.xpspawnercontrol.config;
 
+import brightspark.xpspawnercontrol.XpSpawnerControl;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
-
-import static net.minecraftforge.versions.forge.ForgeVersion.MOD_ID;
 
 public class JsonConfig {
     public static JsonElement load(String filename, MinecraftServer server){
@@ -48,7 +47,7 @@ public class JsonConfig {
                 // fixes java.nio.file.FileSystemNotFoundException: Provider modjar not installed
                 FMLLoader.getLoadingModList().getModFiles().forEach((modFile) -> {
                     modFile.getMods().forEach((modInfo) -> {
-                        if (modInfo.getModId().equals(MOD_ID)){
+                        if (modInfo.getModId().equals(XpSpawnerControl.MOD_ID)){
                             myPath.set(modFile.getFile().findResource("config"));
                         }
                     });
@@ -68,6 +67,7 @@ public class JsonConfig {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
                 File newFile = new File(target, filename);
+                System.out.println("writing to: " + newFile.toString());
                 if (!newFile.exists()) newFile.createNewFile();
                 FileWriter writer = new FileWriter(newFile);
 
@@ -88,6 +88,8 @@ public class JsonConfig {
     }
 
     private static JsonElement loadStats(File statsDataFile) {
+        System.out.println("reading " + statsDataFile.toString());
+
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(statsDataFile.toPath(), StandardCharsets.UTF_8);

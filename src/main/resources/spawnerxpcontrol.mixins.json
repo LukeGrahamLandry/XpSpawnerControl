@@ -2,7 +2,7 @@
   "required": true,
   "package": "brightspark.xpspawnercontrol.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "avatar.refmap.json",
+  "refmap": "spawnerxpcontrol.refmap.json",
   "mixins": [
   ],
   "client": [
