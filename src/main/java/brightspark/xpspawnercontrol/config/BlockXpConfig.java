@@ -23,7 +23,7 @@ public class BlockXpConfig {
     static Random rand = new Random();
 
     static class BlockXpRule {
-        public float chance = 1;
+        public float chance = 1.0F;
         int amount;
         public List<Pair<String, Integer>> intProps = new ArrayList<>();
         public BlockXpRule(int amount){
@@ -102,7 +102,8 @@ public class BlockXpConfig {
             }
 
             if (isMatch) {
-                if (rand.nextFloat() < rule.chance){
+                float r = rand.nextFloat();
+                if (r < rule.chance){
                     return rule.amount;
                 } else {
                     return 0;
