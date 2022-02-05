@@ -20,15 +20,16 @@ public class BlockBreakEvents {
         if (event.getPlayer().level.isClientSide()) return;
         if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, event.getPlayer()) > 0) return;
 
-        if (BlockXpConfig.hasRule(event.getState())) {
-            int xp = BlockXpConfig.getXpAmount(event.getState());
-            if (xp > 0 && event.getState().getBlock().getRegistryName().getNamespace().equals("dynamictrees")){
+        BlockXpConfig.BlockXpRule rule = BlockXpConfig.getRule(event.getState());
+        if (rule != null) {
+            int xp = rule.amount;
+            if (xp > 0 && rule.ignoreCancel){
                 popExperience((ServerWorld) event.getWorld(), event.getPos(), xp);
             } else {
                 event.setExpToDrop(xp);
             }
         }
-     }
+    }
 
     private static void popExperience(ServerWorld p_180637_1_, BlockPos p_180637_2_, int p_180637_3_) {
         if (p_180637_1_.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && !p_180637_1_.restoringBlockSnapshots) {

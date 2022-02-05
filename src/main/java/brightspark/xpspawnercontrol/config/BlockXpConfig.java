@@ -22,9 +22,10 @@ public class BlockXpConfig {
     static HashMap<Block, List<BlockXpRule>> rules = new HashMap<>();
     static Random rand = new Random();
 
-    static class BlockXpRule {
+    public static class BlockXpRule {
         public float chance = 1.0F;
-        int amount;
+        public int amount;
+        public boolean ignoreCancel = false;
         public List<Pair<String, Integer>> intProps = new ArrayList<>();
         public BlockXpRule(int amount){
             this.amount = amount;
@@ -62,6 +63,15 @@ public class BlockXpConfig {
                     }
                 }
 
+                JsonElement ignoreCancel = data.get("ignoreCancel");
+                if (ignoreCancel != null){
+                    try {
+                        rule.ignoreCancel = ignoreCancel.getAsBoolean();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
                 for (JsonElement blockEntry : data.get("blocks").getAsJsonArray()){
                     try{
                         ResourceLocation registryName = new ResourceLocation(blockEntry.getAsString());
@@ -83,11 +93,9 @@ public class BlockXpConfig {
         }
     }
 
-    public static boolean hasRule(BlockState state){
-        return rules.containsKey(state.getBlock());
-    }
+    public static BlockXpRule getRule(BlockState state){
+        if (!rules.containsKey(state.getBlock())) return null;
 
-    public static int getXpAmount(BlockState state){
         for (BlockXpRule rule : rules.get(state.getBlock())){
             boolean isMatch = true;
             for (Pair<String, Integer> requiredState : rule.intProps){
@@ -104,13 +112,13 @@ public class BlockXpConfig {
             if (isMatch) {
                 float r = rand.nextFloat();
                 if (r < rule.chance){
-                    return rule.amount;
+                    return rule;
                 } else {
-                    return 0;
+                    return null;
                 }
             }
         }
 
-        return 0;
+        return null;
     }
 }
