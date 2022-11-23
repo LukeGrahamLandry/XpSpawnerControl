@@ -1,20 +1,13 @@
 package brightspark.xpspawnercontrol.events;
 
 import brightspark.xpspawnercontrol.XpSpawnerControl;
-import brightspark.xpspawnercontrol.config.BlockXpConfig;
 import brightspark.xpspawnercontrol.config.CropGrowConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
 import java.util.Random;
 
@@ -61,7 +54,7 @@ public class CropEvents {
     }
 
     @SubscribeEvent
-    public static void startserver(FMLServerStartedEvent event) {
+    public static void startserver(ServerStartedEvent event) {
         CropGrowConfig.init(event.getServer());
     }
 }

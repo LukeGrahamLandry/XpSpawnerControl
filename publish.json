@@ -1,0 +1,14 @@
+{
+  "loader": "forge",
+  "mc_versions": ["1.18.2", "1.18.1", "1.18"],
+  "changelogUrl": "https://github.com/LukeGrahamLandry/XpSpawnerControl/commits/1.18",
+  "releaseType": "release",
+  "curseforge": {
+    "id": "550664"
+  },
+  "github": {
+    "owner": "LukeGrahamLandry",
+    "repo": "XpSpawnerControl",
+    "branch": "1.18"
+  }
+}

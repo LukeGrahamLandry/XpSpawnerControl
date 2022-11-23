@@ -2,18 +2,17 @@ package brightspark.xpspawnercontrol.config;
 
 import brightspark.xpspawnercontrol.XpSpawnerControl;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.storage.FolderName;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fml.loading.FileUtils;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,7 @@ import java.util.stream.Stream;
 
 public class JsonConfig {
     public static JsonElement load(String filename, MinecraftServer server){
-        final Path serverConfig = server.getWorldPath(new FolderName("serverconfig"));
+        final Path serverConfig = server.getWorldPath(new LevelResource("serverconfig"));
         FileUtils.getOrCreateDirectory(serverConfig, "serverconfig");
 
         File statsDataFile = new File(serverConfig.toFile(), filename);

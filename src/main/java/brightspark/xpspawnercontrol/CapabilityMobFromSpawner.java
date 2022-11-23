@@ -1,20 +1,18 @@
 package brightspark.xpspawnercontrol;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public interface CapabilityMobFromSpawner extends INBTSerializable<CompoundNBT> {
+public interface CapabilityMobFromSpawner extends INBTSerializable<CompoundTag> {
     ResourceLocation RL = new ResourceLocation(XpSpawnerControl.MOD_ID, "_cap");
+    Capability<CapabilityMobFromSpawner> CAP = CapabilityManager.get(new CapabilityToken<>(){});
 
     void setSpawnedFromSpawner();
 
@@ -25,14 +23,14 @@ public interface CapabilityMobFromSpawner extends INBTSerializable<CompoundNBT> 
         private boolean spawnedBySpawner = false;
 
         @Override
-        public CompoundNBT serializeNBT() {
-            CompoundNBT tag = new CompoundNBT();
+        public CompoundTag serializeNBT() {
+            CompoundTag tag = new CompoundTag();
             tag.putBoolean(NBT_KEY, spawnedBySpawner);
             return tag;
         }
 
         @Override
-        public void deserializeNBT(CompoundNBT nbt) {
+        public void deserializeNBT(CompoundTag nbt) {
             spawnedBySpawner = nbt.getBoolean(NBT_KEY);
         }
 
@@ -49,45 +47,30 @@ public interface CapabilityMobFromSpawner extends INBTSerializable<CompoundNBT> 
         }
     }
 
-    class Storage implements Capability.IStorage<CapabilityMobFromSpawner> {
 
-        @Nullable
-        @Override
-        public CompoundNBT writeNBT(Capability<CapabilityMobFromSpawner> capability, CapabilityMobFromSpawner instance, Direction side) {
-            return instance.serializeNBT();
-        }
+    class Provider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
+        private CapabilityMobFromSpawner data;
 
-        @Override
-        public void readNBT(Capability<CapabilityMobFromSpawner> capability, CapabilityMobFromSpawner instance, Direction side, INBT nbt) {
-            instance.deserializeNBT((CompoundNBT) nbt);
-        }
-    }
-
-    class Provider implements ICapabilityProvider, ICapabilitySerializable<CompoundNBT> {
-        private CapabilityMobFromSpawner capabilityI;
-        private Capability<CapabilityMobFromSpawner> capability;
-
-        public Provider(Capability<CapabilityMobFromSpawner> capability) {
-            this.capabilityI = capability.getDefaultInstance();
-            this.capability = capability;
+        public Provider() {
+            this.data = new Impl();
         }
 
         @Nullable
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-            return capability == this.capability && capabilityI != null ? (LazyOptional<T>) LazyOptional.of(() -> capabilityI) : LazyOptional.empty();
+            return capability == CAP && data != null ? (LazyOptional<T>) LazyOptional.of(() -> data) : LazyOptional.empty();
         }
 
         @Override
-        public CompoundNBT serializeNBT()
+        public CompoundTag serializeNBT()
         {
-            return capabilityI.serializeNBT();
+            return data.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(CompoundNBT nbt)
+        public void deserializeNBT(CompoundTag nbt)
         {
-            capabilityI.deserializeNBT(nbt);
+            data.deserializeNBT(nbt);
         }
     }
 }

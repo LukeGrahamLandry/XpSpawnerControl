@@ -1,12 +1,11 @@
 {
   "required": true,
   "package": "brightspark.xpspawnercontrol.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "refmap": "spawnerxpcontrol.refmap.json",
   "mixins": [
   ],
   "client": [
-    "M1Fix"
   ],
   "injectors": {
     "defaultRequire": 1

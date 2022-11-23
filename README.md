@@ -1,13 +1,14 @@
 # Simple XP Config
 
-- Forge 1.16.5
+- Forge 1.18.2
 - Commissioned by *viiizee* & *spiderking23*
 
-Makes sources of experience points more configureable. The first time you open a world, it will generate the default config files which do not change vanilla behaviour. 
+Makes sources of experience points more configureable. The first time you open a world, it will generate the default config files. The mod only needs to be installed on the server but nothing will go wrong if included on the client as well. 
 
 ## Spawner Mobs
 
 - edit the file `world/serverconfig/xpspawnercontrol-server.toml`
+- By default (`isBlacklist=true`, `entityList=[]`), mobs from mob spawners will **NOT** drop xp. Switch to (`isBlacklist=false`, `entityList=[]`) for vanilla behaviour.
 
 Allows you to stop mobs spawned by mob spawners from dropping experience. The config file has two values. 
 
@@ -20,6 +21,7 @@ This functionality is a direct port of [Xp Spawner Control](https://www.cursefor
 
 - edit the file `world/serverconfig/blockxpdrops.json`
 - you must restart the world after editing the config file to see changes
+- By default (`[]`), vanilla behaviour will not be changed.
 
 Lets you add xp drops to certain blocks. These xp drops will not apply when you are using silk touch. 
 
@@ -30,8 +32,8 @@ The file is a list of json objects representing xp drop rules.
 - `amount`: the amount of xp to drop. required
 - `chance`: the probability for that xp to drop when a block meeting the conditions is broken. A decimal number where 1 means always and 0 means never (defaults to 1). 
 - `state`: an object with the block state properties that must be true for this rule to apply. Only supports integer properties (like crops `age`, cauldren/composter `level`, cake `bites`, turtle `eggs`). This can be left off to ignore the blockstate. 
-- `ignoreCancel`: defaults to false. when true, xp will be dropped even if the break event is canceled by another mod (useful for Dynamic Trees). 
-- 
+- `ignoreCancel`: defaults to false. when true, xp will be dropped even if the break event is canceled by another mod (useful for Dynamic Trees).
+
 Example that makes grown crops drop xp sometimes:
 
 ```json
@@ -54,11 +56,12 @@ Example that makes grown crops drop xp sometimes:
   }
 ]
 ```
-
+ 
 ## Crop Growth Modifiers 
 
 - edit the file `world/serverconfig/cropgrowthmodifiers.json`
 - you must restart the world after editing the config file to see changes
+- By default (`[]`), vanilla behaviour will not be changed.
 
 Lets you prevent crops from growing under certain conditions. 
 

@@ -31,7 +31,7 @@ public class XPModConfig {
                 .define("isBlacklist", true);
 
         entityList = serverBuilder
-                .comment("A list of all of the entity registry names which this mod will affect. ex. [\"minecraft:skeleton\", \"minecraft:zombie\"]")
+                .comment("A list of all of the entity registry names which this mod will affect. ex. [\"minecraft:skeleton\", \"minecraft:zombie\"]. An empty list with isBlacklist=true will make no mobs from spawners drop xp. An empty list with isBlacklist=false will be vanilla behaviour (all spawner mobs drop xp)")
                 .defineList("entityList", Collections.emptyList(), (s) -> ((String)s).split(":").length > 0);
 
         server_config = serverBuilder.build();

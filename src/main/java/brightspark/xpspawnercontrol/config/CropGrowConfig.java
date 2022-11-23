@@ -2,17 +2,18 @@ package brightspark.xpspawnercontrol.config;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.state.Property;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class CropGrowConfig {
     static HashMap<Block, List<CropGrowthRule>> rules = new HashMap<>();
@@ -32,7 +33,7 @@ public class CropGrowConfig {
             this.minTemp = minTemp;
         }
 
-        public boolean matches(IWorld world, BlockPos pos, BlockState state) {
+        public boolean matches(LevelAccessor world, BlockPos pos, BlockState state) {
             if (this.minY != null){
                 if (pos.getY() >= this.minY) return true;
             }
@@ -43,12 +44,12 @@ public class CropGrowConfig {
 
             Float temp = null;
             if (this.minTemp != null) {
-                temp = world.getBiome(pos).getTemperature(pos);
+                temp = world.getBiome(pos).value().getBaseTemperature();
                 if (temp >= this.minTemp) return true;
             }
 
             if (this.maxTemp != null) {
-                if (temp == null) temp = world.getBiome(pos).getTemperature(pos);
+                if (temp == null) temp = world.getBiome(pos).value().getBaseTemperature();
                 if (temp >= this.maxTemp) return true;
             }
 
